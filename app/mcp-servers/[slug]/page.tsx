@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AssetDetail } from "@/components/asset-detail";
 import { assetsBySegment, getAsset } from "@/lib/content";
-import { typeLabels } from "@/lib/data";
-import { pageMeta } from "@/lib/seo";
+import { assetMeta } from "@/lib/seo";
 
 const SEGMENT = "mcp-servers";
 
@@ -19,12 +18,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const asset = getAsset(SEGMENT, slug);
   if (!asset) return {};
-  return pageMeta({
-    title: asset.title,
-    description: asset.summary,
-    path: asset.url,
-    eyebrow: typeLabels[asset.type],
-  });
+  return assetMeta(asset);
 }
 
 export default async function Page({

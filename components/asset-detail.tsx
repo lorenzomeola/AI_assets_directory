@@ -12,6 +12,7 @@ import {
   User,
   Workflow,
 } from "lucide-react";
+import Link from "next/link";
 import { AssetCard } from "@/components/asset-card";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CopyBlock } from "@/components/copy-block";
@@ -19,7 +20,7 @@ import { GithubIcon } from "@/components/icons";
 import { JsonLd } from "@/components/json-ld";
 import { VoteButton } from "@/components/vote-button";
 import type { Asset } from "@/lib/content";
-import { related } from "@/lib/content";
+import { getSuiteParent, related, suiteChildren } from "@/lib/content";
 import { categoryBySlug, toolLabel, typeLabels } from "@/lib/data";
 import type { AssetType } from "@/lib/data";
 import { breadcrumbSchema, howToSchema, softwareAppSchema } from "@/lib/seo";
@@ -40,6 +41,8 @@ export function AssetDetail({ asset }: { asset: Asset }) {
   const Icon = typeIcon[asset.type];
   const category = categoryBySlug(asset.segment);
   const relatedAssets = related(asset);
+  const children = suiteChildren(asset.slug);
+  const parent = getSuiteParent(asset);
 
   const schemas: object[] = [
     softwareAppSchema(asset),
@@ -94,6 +97,14 @@ export function AssetDetail({ asset }: { asset: Asset }) {
           {asset.title}
         </h1>
         <p className="mt-3 max-w-2xl text-lg text-muted">{asset.summary}</p>
+        {parent && (
+          <p className="mt-3 font-mono text-xs text-muted">
+            part of{" "}
+            <Link href={parent.url} className="text-accent-strong hover:underline">
+              {parent.title}
+            </Link>
+          </p>
+        )}
       </header>
 
       <div className="grid grid-cols-1 gap-10 pt-10 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -115,6 +126,27 @@ export function AssetDetail({ asset }: { asset: Asset }) {
             className="prose"
             dangerouslySetInnerHTML={{ __html: asset.body }}
           />
+
+          {children.length > 0 && (
+            <section className="mt-12">
+              <h2 className="font-display text-xl font-semibold text-fg">
+                {children.length} skills in this suite
+              </h2>
+              <ul className="mt-4 divide-y divide-line rounded-xl card-surface">
+                {children.map((c) => (
+                  <li key={c.slug} className="px-5 py-3">
+                    <Link
+                      href={c.url}
+                      className="font-medium text-fg hover:text-accent-strong"
+                    >
+                      {c.title}
+                    </Link>
+                    <p className="mt-0.5 text-sm text-muted">{c.summary}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           {asset.testimonials.length > 0 && (
             <section className="mt-12">
