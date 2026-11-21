@@ -1,4 +1,4 @@
-import { allAssets, learnDocs, blogPosts } from "@/lib/content";
+import { indexableAssets, learnDocs, blogPosts } from "@/lib/content";
 import { categories } from "@/lib/data";
 import { SITE_NAME, SITE_TAGLINE, SITE_URL, abs } from "@/lib/site";
 
@@ -18,7 +18,7 @@ export function GET() {
     ...categories.map((c) => line(c.name, abs(c.href), c.blurb)),
     "",
     "## Assets",
-    ...allAssets.map((a) => line(a.title, abs(a.url), a.summary)),
+    ...indexableAssets.map((a) => line(a.title, abs(a.url), a.summary)),
     "",
     "## Learn",
     ...learnDocs.map((d) => line(d.title, abs(d.url), d.summary)),

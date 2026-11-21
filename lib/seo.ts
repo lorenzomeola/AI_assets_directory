@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { Asset, LearnDoc, BlogPost } from "@/lib/content";
+import { typeLabels } from "@/lib/data";
 import { SITE_NAME, SITE_URL, SITE_TAGLINE, SITE_GITHUB, abs } from "@/lib/site";
 
 // ── OG image ────────────────────────────────────────────────────────────────
@@ -25,12 +26,14 @@ export function pageMeta(opts: {
   absoluteTitle?: boolean;
   publishedTime?: string;
   modifiedTime?: string;
+  noindex?: boolean;
 }): Metadata {
   const img = ogImagePath({ title: opts.ogTitle ?? opts.title, eyebrow: opts.eyebrow });
   return {
     title: opts.absoluteTitle ? { absolute: opts.title } : opts.title,
     description: opts.description,
     alternates: { canonical: opts.path },
+    ...(opts.noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type: opts.ogType ?? "website",
       url: opts.path,
@@ -48,6 +51,20 @@ export function pageMeta(opts: {
       images: [img],
     },
   };
+}
+
+/** Shared generateMetadata for every asset detail route. */
+export function assetMeta(asset: Asset): Metadata {
+  const label = typeLabels[asset.type];
+  const hasLabel = asset.title.toLowerCase().includes(label.toLowerCase());
+  return pageMeta({
+    title: hasLabel ? asset.title : `${asset.title} - ${label}`,
+    description: asset.summary,
+    path: asset.url,
+    eyebrow: label,
+    ogTitle: asset.title,
+    noindex: !asset.indexable,
+  });
 }
 
 // ── JSON-LD builders ─────────────────────────────────────────────────────────

@@ -60,6 +60,20 @@ function toCard(a: Asset): CardAsset {
 
 export const cards: CardAsset[] = allAssets.map(toCard);
 
+/** Assets that should appear in the sitemap / llms.txt (noindex pages excluded). */
+export const indexableAssets: Asset[] = allAssets.filter((a) => a.indexable);
+
+/** Sub-skills that belong to a suite parent (e.g. claude-ads-x -> claude-ads). */
+export function suiteChildren(parentSlug: string): Asset[] {
+  return allAssets.filter((a) => a.suite === parentSlug);
+}
+
+export function getSuiteParent(asset: Asset): Asset | undefined {
+  return asset.suite
+    ? allAssets.find((a) => a.slug === asset.suite && a.segment === asset.segment)
+    : undefined;
+}
+
 export function cardsBySegment(segment: string): CardAsset[] {
   return cards.filter((c) => c.segment === segment);
 }

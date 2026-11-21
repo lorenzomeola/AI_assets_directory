@@ -9,6 +9,13 @@ const segmentByType: Record<string, string> = {
   "cursor-rule": "cursor-rules",
 };
 
+// Sub-skills of a multi-skill repo share one template; only the parent is indexed.
+const SUITE_PREFIXES: Record<string, string> = {
+  "claude-ads-": "claude-ads",
+  "claude-seo-": "claude-seo",
+  "data-analytics-": "data-analytics-skills",
+};
+
 const assets = defineCollection({
   name: "Asset",
   pattern: "assets/**/*.md",
@@ -51,6 +58,8 @@ const assets = defineCollection({
       starsNote: s.string().optional(),
       verified: s.boolean().default(false),
       official: s.boolean().default(false),
+      // Explicit override; by default sub-skills of a suite are noindex.
+      indexable: s.boolean().optional(),
       video: s.string().optional(),
       install: s.string().optional(),
       installLang: s.string().default("bash"),
@@ -65,11 +74,18 @@ const assets = defineCollection({
         .default([]),
       body: s.markdown(),
     })
-    .transform((data) => ({
-      ...data,
-      segment: segmentByType[data.type],
-      url: `/${segmentByType[data.type]}/${data.slug}`,
-    })),
+    .transform((data) => {
+      const suite = Object.entries(SUITE_PREFIXES).find(
+        ([prefix, parent]) => data.slug.startsWith(prefix) && data.slug !== parent,
+      )?.[1];
+      return {
+        ...data,
+        suite,
+        indexable: data.indexable ?? !suite,
+        segment: segmentByType[data.type],
+        url: `/${segmentByType[data.type]}/${data.slug}`,
+      };
+    }),
 });
 
 const learn = defineCollection({
