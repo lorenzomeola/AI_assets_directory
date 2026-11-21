@@ -26,19 +26,28 @@ Un sitio nuevo con poca autoridad tiene un presupuesto pequeño. Estrategia:
 - [x] Los padres de suite listan sus sub-skills (enlazado interno); las sub-skills enlazan a su padre.
 - [x] Título de ficha: `{Título} - {Claude Skill | MCP Server | ...}`; helper único `assetMeta()` en `lib/seo.ts`.
 
-Pendiente de desplegar: subir a `preview`, probar, merge a `main`.
+- [x] Desplegado el 2026-11-21: `preview` -> `main` (commits `b63ba45`, `5e48657`, `2e1ee67`). Verificado en producción: `claude-ads-x` sirve `noindex, follow`, sitemap con 124 URLs, padres de suite `index, follow`.
 
-## 2. Semana 1 — Diagnóstico y despliegue
+## 2. Semana 1 — Diagnóstico y despliegue (CERRADA 2026-11-21)
 
-- [ ] Vercel → Settings → Environment Variables (Production): confirmar que **no** existen `SITE_GATE_USER` / `SITE_GATE_PASSWORD`.
-- [ ] Search Console → Páginas: abrir cada uno de los 3 motivos de "no indexadas" y anotar los ejemplos aquí:
-  - Motivo 1: ______  (esperado: "Rastreada: actualmente sin indexar")
-  - Motivo 2: ______  (esperado: "Descubierta: actualmente sin indexar" o "Duplicada, Google eligió otra canónica")
-  - Motivo 3: ______
-- [ ] Inspección de URL → "Probar URL publicada" en 1 asset indexado y 1 no indexado: comparar HTML renderizado y canónica elegida por Google.
-- [ ] Confirmar que `www`, `http` y `*.vercel.app` redirigen al dominio canónico.
-- [ ] Desplegar los cambios, reenviar `sitemap.xml` en Search Console (debe mostrar ~124 URLs).
-- [ ] Pedir indexación manual solo de las 5-10 mejores URLs (home, hubs de categoría, 3 artículos evergreen). No masivo.
+- [x] Vercel: `SITE_GATE_USER` / `SITE_GATE_PASSWORD` no existen en Production.
+- [x] Search Console → Páginas, motivos de "no indexadas":
+  - Motivo 1: Rastreada, actualmente sin indexar — 117 (calidad / contenido casi duplicado).
+  - Motivo 2: Descubierta, actualmente sin indexar — 48 (poca autoridad / presupuesto de rastreo).
+  - Motivo 3: Página con redirección — 1 (308 por barra final, inofensivo).
+- [x] Inspección de URL: home = "URL is on Google". `/mcp-servers/github-mcp-server` = "URL is unknown to Google" (sin sitemap ni página referente, nunca rastreada). La página está bien (200, `index, follow`, canonical propia, en el sitemap): es un problema de descubrimiento, no de calidad.
+- [x] Dominios: apex = Production; `www` y `*.vercel.app` redirigen 308 al apex; `http` redirige a https.
+- [x] Sitemap reenviado en Search Console; indexación solicitada para las URLs clave.
+- [x] Renombre de GitHub (`lorenzomeolav32-png` -> `lorenzomeola`): enlaces del repo actualizados (`lib/site.ts`, workflow, blog, 4 fichas). Las URLs antiguas redirigen 301.
+- [ ] Pendiente, no bloquea: `www` sin verificar desde fuera de la red corporativa (móvil o dnschecker); integración KV/Redis en Vercel con "Needs Attention" (votos y newsletter); comprobar que el workflow "Sync awesome list" pasa tras el renombre.
+
+### Revisión del lunes de finales de noviembre (antes de empezar la semana 2)
+Anotar en `SEO_MAINTENANCE.md` y comparar con la línea base (46 indexadas / 212, 0 clics, 117 + 48 no indexadas):
+- [ ] GSC → Sitemaps: estado "Correcto", ~124 URLs descubiertas.
+- [ ] GSC → Páginas: evolución de "Rastreada, sin indexar" y "Descubierta, sin indexar" (las sub-skills pasan a "Excluida por noindex", esperado).
+- [ ] GSC → Rendimiento: impresiones y clics de los últimos 28 días.
+- [ ] Estado de cada URL con indexación solicitada: ya en Google / "desconocida" / "rastreada, sin indexar".
+- [ ] Regla de decisión: "desconocida" = esperar y reforzar enlazado interno; "rastreada, sin indexar" = enriquecer la ficha antes de volver a pedirla.
 
 ## 3. Semanas 1-4 — Calidad de los assets
 
@@ -138,7 +147,7 @@ Rutina: cada lunes anotar en el log de `SEO_MAINTENANCE.md` los 5 números de ar
 
 | Semana | Foco |
 |---|---|
-| 1 | Desplegar cambios técnicos, diagnóstico GSC, comprobar Vercel/redirecciones |
+| 1 | HECHO (21 nov): cambios técnicos desplegados, diagnóstico GSC, dominios y redirecciones |
 | 2-3 | Enriquecer 10 fichas (MCP + padres de suite), refrescar los 7 artículos vencidos |
 | 3-4 | Construir `/topics` + 3 primeros hubs, sitemap por tipo |
 | 5-8 | 5 hubs más, 1-2 artículos/semana, campaña de backlinks |
