@@ -11,7 +11,7 @@ reviewBy: 2027-03-15
 
 Every asset in this directory, all 123 of them, now also lives as a plain
 markdown list on GitHub:
-[awesome-claude-skills-mcp-servers](https://github.com/lorenzomeolav32-png/awesome-claude-skills-mcp-servers).
+[awesome-claude-skills-mcp-servers](https://github.com/lorenzomeola/awesome-claude-skills-mcp-servers).
 
 ## Why bother, if the site already exists
 

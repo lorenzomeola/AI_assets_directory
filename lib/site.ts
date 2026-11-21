@@ -14,11 +14,11 @@ export const SITE_DESCRIPTION =
 /** Contact + ownership. Single source of truth for legal/company pages. */
 export const SITE_OPERATOR = "AI Assets Directory";
 export const SITE_EMAIL = "contact@aiassetsdirectory.com";
-export const SITE_GITHUB = "https://github.com/lorenzomeolav32-png/AI_assets_directory";
+export const SITE_GITHUB = "https://github.com/lorenzomeola/AI_assets_directory";
 
 /** Companion open-source list, cross-linked for backlinks + discovery. */
 export const AWESOME_LIST_URL =
-  "https://github.com/lorenzomeolav32-png/awesome-claude-skills-mcp-servers";
+  "https://github.com/lorenzomeola/awesome-claude-skills-mcp-servers";
 
 /** Byline shown on blog/learn articles (E-E-A-T: a real, identifiable author). */
 export const AUTHOR_NAME = "Lorenzo Meola";

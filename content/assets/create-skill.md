@@ -11,11 +11,11 @@ tags: [meta, claude-code, devx]
 tools: [claude-code]
 license: MIT
 author: AI Assets Directory
-source: https://github.com/lorenzomeolav32-png/ai-assets-directory-skills/tree/main/skills/create-skill
+source: https://github.com/lorenzomeola/ai-assets-directory-skills/tree/main/skills/create-skill
 verified: true
 install: |
   # Clone the skills monorepo and copy this skill into your skills folder
-  git clone https://github.com/lorenzomeolav32-png/ai-assets-directory-skills
+  git clone https://github.com/lorenzomeola/ai-assets-directory-skills
   cp -r ai-assets-directory-skills/skills/create-skill ~/.claude/skills/create-skill
 installLang: bash
 ---
@@ -54,7 +54,7 @@ You need Claude Code and Git.
 
 1. Clone the skills monorepo:
    ```bash
-   git clone https://github.com/lorenzomeolav32-png/ai-assets-directory-skills
+   git clone https://github.com/lorenzomeola/ai-assets-directory-skills
    ```
 2. Copy the skill folder into your global skills directory:
    ```bash

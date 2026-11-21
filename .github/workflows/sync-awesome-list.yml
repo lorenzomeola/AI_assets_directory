@@ -37,7 +37,7 @@ jobs:
       - name: Checkout awesome-list repo
         uses: actions/checkout@v4
         with:
-          repository: lorenzomeolav32-png/awesome-claude-skills-mcp-servers
+          repository: lorenzomeola/awesome-claude-skills-mcp-servers
           token: ${{ secrets.AWESOME_REPO_TOKEN }}
           path: awesome-list-repo
 
